@@ -43,6 +43,8 @@ game_state.main.prototype = {
         this.bullets = game.add.group();
         this.bullets.createMultiple(25, 'bullet');
         this.bullets.setAll('outOfBoundsKill', true);
+
+        this.bulletTime = game.time.now; //Used for weapon cooldown
     },
 
     update: function() {
