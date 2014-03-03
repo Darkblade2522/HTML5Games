@@ -32,6 +32,7 @@ game_state.main.prototype = {
 
         this.player.body.bounce.y = 0.2;
         this.player.body.gravity.y = 1000;
+        this.player.health = 1;
         this.facing = Phaser.LEFT;
 
         //Give default weapon
@@ -52,19 +53,23 @@ game_state.main.prototype = {
         this.enemies.createMultiple(5, 'enemy');
         this.enemies.setAll('outOfBoundsKill', true);
 
+        //TODO Add kill event listeners
+        this.player.events.onKilled.add(this.playerDie, this);
+
         Enemies.getRandomEnemy()(this);
     },
 
     update: function() {
         // This is where we will spend the most of our time. This function is called 60 times per second to update the game.
-        // Increase the angle of the sprite by one degree
 
         game.physics.collide(this.player, this.platforms);
         game.physics.collide(this.enemies, this.platforms);
         game.physics.collide(this.player, this.walls);
         game.physics.collide(this.player, this.roof);
+        game.physics.overlap(this.enemies, this.player, this.enemyPlayer, null, this);
         game.physics.overlap(this.enemies, this.walls, this.enemyWall, null, this);
         game.physics.overlap(this.enemies, this.basement, this.enemyBasement, null, this);
+        game.physics.overlap(this.player, this.basement, this.playerBasement, null, this);
         game.physics.overlap(this.bullets, this.platforms, this.bulletPlatform, null, this);
         game.physics.overlap(this.bullets, this.walls, this.bulletPlatform, null, this);
 
@@ -113,12 +118,33 @@ game_state.main.prototype = {
     },
     enemyWall: function(enemy, wall){
         enemy.body.velocity.x *= -1;
-        //this.bullets.remove(bullet);
+        enemy.scale.x *= -1;
     },
     enemyBasement: function(enemy, basement){
         enemy.body.velocity.x *= -1.5;
+        enemy.scale.x *= -1;
         enemy.body.y = 0;
-        //this.bullets.remove(bullet);
+    },
+    enemyPlayer: function(enemy, player){
+        enemy.damage(1);
+        player.damage(1);
+    },
+    enemyBullet: function(enemy, bullet){
+        bullet.kill();
+        enemy.damage(bullet.damage);
+    },
+    playerBasement: function(player, basement){
+        player.damage(99);
+    },
+    playerDie: function(player){
+        //TODO add nice particle effects
+        //TODO add game over/restart
+    },
+    enemyDie: function(enemy){
+        //TODO add nice particle effects
+    },
+    bulletDie: function(bullet){
+        //TODO add nice particle effects
     },
     buildLevel: function() {
     	this.platforms = game.add.group();
