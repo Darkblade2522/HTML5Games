@@ -17,7 +17,9 @@ game_state.main.prototype = {
 		game.stage.backgroundColor = '#71c5cf';
 		game.load.image('player', './assets/player.png');
         game.load.image('brick', './assets/brick.png');
-		game.load.image('bullet', './assets/bullet.png');
+        game.load.image('no-block', './assets/no-block.png');
+        game.load.image('bullet', './assets/bullet.png');
+		game.load.image('enemy', './assets/enemy.png');
     },
 
     create: function() { 
@@ -41,10 +43,16 @@ game_state.main.prototype = {
         this.buildLevel();
         
         this.bullets = game.add.group();
-        this.bullets.createMultiple(25, 'bullet');
+        this.bullets.createMultiple(5, 'bullet');
         this.bullets.setAll('outOfBoundsKill', true);
 
         this.bulletTime = game.time.now; //Used for weapon cooldown
+
+        this.enemies = game.add.group();
+        this.enemies.createMultiple(5, 'enemy');
+        this.enemies.setAll('outOfBoundsKill', true);
+
+        Enemies.getRandomEnemy()(this);
     },
 
     update: function() {
@@ -52,6 +60,13 @@ game_state.main.prototype = {
         // Increase the angle of the sprite by one degree
 
         game.physics.collide(this.player, this.platforms);
+        game.physics.collide(this.enemies, this.platforms);
+        game.physics.collide(this.player, this.walls);
+        game.physics.collide(this.player, this.roof);
+        game.physics.overlap(this.enemies, this.walls, this.enemyWall, null, this);
+        game.physics.overlap(this.enemies, this.basement, this.enemyBasement, null, this);
+        game.physics.overlap(this.bullets, this.platforms, this.bulletPlatform, null, this);
+        game.physics.overlap(this.bullets, this.walls, this.bulletPlatform, null, this);
 
 
         //  Reset the players velocity (movement)
@@ -92,6 +107,19 @@ game_state.main.prototype = {
             this.player.body.velocity.y = -450;
         }
     } ,
+    bulletPlatform: function(bullet, platform){
+        bullet.kill();
+        //this.bullets.remove(bullet);
+    },
+    enemyWall: function(enemy, wall){
+        enemy.body.velocity.x *= -1;
+        //this.bullets.remove(bullet);
+    },
+    enemyBasement: function(enemy, basement){
+        enemy.body.velocity.x *= -1.5;
+        enemy.body.y = 0;
+        //this.bullets.remove(bullet);
+    },
     buildLevel: function() {
     	this.platforms = game.add.group();
     	this.walls = game.add.group();
@@ -141,11 +169,22 @@ game_state.main.prototype = {
  		middle3.scale.setTo(5, 1); 
 
       	var middle4 = this.platforms.create(w/2+150, h/2, 'brick');
-    	middle4.anchor.setTo(0, 0.5);
- 		middle4.scale.setTo(5, 1); 
+        middle4.anchor.setTo(0, 0.5);
+        middle4.scale.setTo(5, 1); 
+
+
+        this.roof = game.add.sprite(w/2 -60, 0, 'no-block');
+        this.roof.anchor.setTo(0, 0);
+        this.roof.scale.setTo(6, 1); 
+
+        this.basement = game.add.sprite(220, h, 'no-block');
+    	this.basement.anchor.setTo(0, 0);
+ 		this.basement.scale.setTo(3, 1); 
 
  		this.platforms.setAll('body.immovable', true);
- 		this.walls.setAll('body.immovable', true);
+        this.walls.setAll('body.immovable', true);
+        this.roof.body.immovable = true;
+ 		this.basement.body.immovable = true;
 	}
 }
 
