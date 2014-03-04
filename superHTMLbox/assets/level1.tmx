@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="tiles-1" tilewidth="16" tileheight="16">
+  <image source="tiles-1.png" width="272" height="64"/>
+ </tileset>
+ <layer name="Platforms" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmNsKwyAMhnOx070dO7Dtqi3bS+z9H2vKFuaCJtpajLAfPrQt1fBjNGgAwBB6r98lwImOnUP3iYUykL4Ep9D4qbixD5ajMEcNoX93y6NyLCFhfHvQ7d8Iuv1zaPbP5QjnX0r+zmEU4pPy11+nJvBcos/Nqz1/W19/tYTxuVazfz3wZ39s/ZYSNy+2U/K/lLh5/+fHdLWSv63XLyn1/Ryk803a/2rXB27/07j+0N8Wzg+N/qXWf7XUUv13tdwYtgvFsLOsIzzhm+PSHnVeKL4T/O5z9F5jIN9j7cWyYuAU+2cDb4/ofYr/nNvG4JRz1+KD714VzCkl
+  </data>
+ </layer>
+ <layer name="Basement" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztxbkNADAMxDAvkG//ZXOle7ckIKgKAAAAAGZW2umkm1771Ac0OABt
+  </data>
+ </layer>
+ <layer name="Roof" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztxbkNADAMxDBvlG//3XKle7ckIKhqbqWdTrrptQMAAADAxAf/QAFb
+  </data>
+ </layer>
+</map>

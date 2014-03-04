@@ -4,23 +4,24 @@ var Enemies = function(){
 
 Enemies.enemiesAvailable = [
 	function(context){
+		console.log("createEnemy");
 		var enemy = context.enemies.getFirstExists(false);
 
 	    if (enemy) {
-		    enemy.reset(w/2, 50);
+			console.log("createEnemy2");
+		    enemy.reset(40, 50);
 		    enemy.scale.setTo(1, 1);
 		    enemy.anchor.setTo(0.5, 1);
-		    enemy.body.gravity.y = 1000;
-		    enemy.body.velocity.x = 150;
-		    //enemy.animations.add('walk', [0, 1], 3, true);
+		    enemy.body.gravity.y = 1000 * gravityMultiplier;
+	    	enemy.body.velocity.x = 150;
+	    	enemy.health = 1;
 
-		    /*if (context.half == 1) {
+		    /*if (Math.random() < 0.5 ) {
+		    	enemy.body.velocity.x = -150;
+		    	enemy.body.x = w - 20;
 		    	enemy.scale.setTo(-1, 1);
-		    	context.half = 0;
-		    }
-		    else
-		    	context.half = 1;
-			}*/
+		    }*/
+		    //enemy.animations.add('walk', [0, 1], 3, true);
 		}
 	}
 ];
