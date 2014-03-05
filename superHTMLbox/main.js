@@ -80,7 +80,8 @@ game_state.main.prototype = {
 		this.crateApparitionZones = [
 			{xMin:20, xMax:w-20, yMin:20, yMax:100},
 			{xMin:20, xMax:w-20, yMin:120, yMax:160}
-			//TODO Last zone
+			//TODO Divide in equal zones
+            //TODO fixed altitude
 		]
 
 		//first crate
