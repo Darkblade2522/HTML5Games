@@ -4,24 +4,29 @@ var Enemies = function(){
 
 Enemies.enemiesAvailable = [
 	function(context){
-		console.log("createEnemy");
-		var enemy = context.enemies.getFirstExists(false);
+		console.log("Create a group of 1-3 small enemies");
+		var random = Math.random();
+		for (var i = 0, numberEnemies = Math.floor(Math.random() *3); i<= numberEnemies; i++){
+			var enemy = context.enemies.getFirstExists(false);
 
-	    if (enemy) {
-			console.log("createEnemy2");
-		    enemy.reset(40, 50);
-		    enemy.scale.setTo(1, 1);
-		    enemy.anchor.setTo(0.5, 1);
-		    enemy.body.gravity.y = 1000 * gravityMultiplier;
-	    	enemy.body.velocity.x = 150;
-	    	enemy.health = 1;
-
-		    /*if (Math.random() < 0.5 ) {
-		    	enemy.body.velocity.x = -150;
-		    	enemy.body.x = w - 20;
-		    	enemy.scale.setTo(-1, 1);
-		    }*/
-		    //enemy.animations.add('walk', [0, 1], 3, true);
+			if (enemy) {
+				enemy.velocity = 150;
+				if (random < 0.5 ) {
+					enemy.reset(w-100 + i*40, -50);
+					enemy.body.velocity.x = -enemy.velocity ;
+					enemy.scale.setTo(-1, 1);
+				}
+				else
+				{
+					enemy.reset(100 - i*40, -50);
+					enemy.body.velocity.x = enemy.velocity ;
+					enemy.scale.setTo(1, 1);
+				}
+				enemy.anchor.setTo(0.5, 1);
+				enemy.body.gravity.y = 1000 * gravityMultiplier;
+				enemy.health = 0;
+				//enemy.animations.add('walk', [0, 1], 3, true);
+			}
 		}
 	}
 ];

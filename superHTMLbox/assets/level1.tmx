@@ -5,15 +5,15 @@
  </tileset>
  <layer name="Platforms" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJztmNsKwyAMhnOx070dO7Dtqi3bS+z9H2vKFuaCJtpajLAfPrQt1fBjNGgAwBB6r98lwImOnUP3iYUykL4Ep9D4qbixD5ajMEcNoX93y6NyLCFhfHvQ7d8Iuv1zaPbP5QjnX0r+zmEU4pPy11+nJvBcos/Nqz1/W19/tYTxuVazfz3wZ39s/ZYSNy+2U/K/lLh5/+fHdLWSv63XLyn1/Ryk803a/2rXB27/07j+0N8Wzg+N/qXWf7XUUv13tdwYtgvFsLOsIzzhm+PSHnVeKL4T/O5z9F5jIN9j7cWyYuAU+2cDb4/ofYr/nNvG4JRz1+KD714VzCkl
+   eJztmNsKwjAMhjPweL0ND6hX21Cv51l8/8cyxRVnadLgHG3BHz6i3cGfuKTRFABSg6L1OnMwB157y/2lZI0XxQE5IifkjFyINfP91eGvFtzbdlx5KpGZIAc+pPO3RXaevdik/eUQdv4qCDt/khr0Ie1P1QiXv6Q5py/GDn+u+r0B3QtsfcG2bjtPx7vDX+j1G/vz50van4oh568Afv+f9uhhwnxu3orqO6ZqkaqvX6gGug9U8N8/uiiW+o19fknAPeN3geoP0v5n7r/S+Vy65tp/Vf8L8fnT+Y1h/wgxf9L5z5dimv/WyIaBmsG7Ss0HQ4IHvH8DuHrUsid/C/jsc+b/GqVxnIorZMDAibpmBK8caR9Fi/LLSMGJu8701EavPQGs4jFP
   </data>
  </layer>
- <layer name="Basement" width="40" height="30">
+ <layer name="Basement" width="40" height="30" visible="0">
   <data encoding="base64" compression="zlib">
    eJztxbkNADAMxDAvkG//ZXOle7ckIKgKAAAAAGZW2umkm1771Ac0OABt
   </data>
  </layer>
- <layer name="Roof" width="40" height="30">
+ <layer name="Roof" width="40" height="30" visible="0">
   <data encoding="base64" compression="zlib">
    eJztxbkNADAMxDBvlG//3XKle7ckIKhqbqWdTrrptQMAAADAxAf/QAFb
   </data>

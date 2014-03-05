@@ -6,9 +6,9 @@ var Weapon = function(shootFunction, cooldown, damage){
 
 Weapon.weaponsAvailable = [
 	new Weapon(function(context){
-	    if (context.game.time.now > context.bulletTime) {
-	        context.bulletTime = game.time.now + this.cooldown;
-		    var bullet = context.bullets.getFirstExists(false);
+		if (context.game.time.now > context.bulletTime) {
+			context.bulletTime = game.time.now + this.cooldown;
+			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
 				bullet.reset(context.player.center.x, context.player.center.y/*, 1*/);
@@ -19,7 +19,7 @@ Weapon.weaponsAvailable = [
 					bullet.body.velocity.x = 350;
 			}
 		}
-	}, 500, 1)
+	}, 300, 1)
 ]
 
 Weapon.getRandomWeapon = function(){
