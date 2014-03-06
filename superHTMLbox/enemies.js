@@ -7,10 +7,11 @@ Enemies.enemiesAvailable = [
 		console.log("Create a group of 1-3 small enemies");
 		var random = Math.random();
 		for (var i = 0, numberEnemies = Math.floor(Math.random() *3); i<= numberEnemies; i++){
-			var enemy = context.enemies.getFirstExists(false);
+			var enemy = context.smallEnemies.getFirstExists(false);
 
 			if (enemy) {
 				enemy.velocity = 150;
+				enemy.velocityMultiplicator = 1;
 				if (random < 0.5 ) {
 					enemy.reset(w-100 + i*40, -50);
 					enemy.body.velocity.x = -enemy.velocity ;
@@ -24,7 +25,7 @@ Enemies.enemiesAvailable = [
 				}
 				enemy.anchor.setTo(0.5, 1);
 				enemy.body.gravity.y = 1000 * gravityMultiplier;
-				enemy.health = 0;
+				enemy.health = 1;
 				//enemy.animations.add('walk', [0, 1], 3, true);
 			}
 		}

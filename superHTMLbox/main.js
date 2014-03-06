@@ -22,7 +22,7 @@ game_state.main.prototype = {
 		game.load.image('crate', './assets/brick.png');
 		game.load.image('no-block', './assets/no-block.png');
 		game.load.image('bullet', './assets/bullet.png');
-		game.load.image('enemy', './assets/enemy.png');
+		game.load.image('smallEnemy', './assets/enemy.png');
 	},
 
 	create: function() { 
@@ -36,9 +36,14 @@ game_state.main.prototype = {
 		this.platforms  = this.map.createLayer('Platforms');
 		//TODO Use simple sprites or différent tilemaps for collision
 		//TODO Use a background layer for decoration?
-		this.basement = this.map.createLayer('Basement');
+		//this.basement = this.map.createLayer('Basement');
 		this.roof     = this.map.createLayer('Roof');
 		//this.layer.resizeWorld();
+
+		this.basement = game.add.sprite(w/2-50, h, 'no-block');
+		this.basement.height = 20;
+		this.basement.width = 120;
+		//this.basement.body.immovable = true;
 
 		this.player = game.add.sprite(w/2, h/2, 'player');
 		this.player.scale.setTo(0.5,0.5);
@@ -60,13 +65,15 @@ game_state.main.prototype = {
 		//this.buildLevel();
 		
 		this.bullets = game.add.group();
-		this.bullets.createMultiple(5, 'bullet');
+		this.bullets.createMultiple(50, 'bullet');
 		this.bullets.setAll('outOfBoundsKill', true);
 
 		this.bulletTime = game.time.now; //Used for weapon cooldown
 
 		this.enemies = game.add.group();
-		this.enemies.createMultiple(20, 'enemy');
+		this.smallEnemies = game.add.group();
+		this.smallEnemies.createMultiple(20, 'smallEnemy');
+		this.enemies.add(this.smallEnemies);
 		//this.enemies.setAll('outOfBoundsKill', true);
 
 		//TODO Add kill event listeners
@@ -78,10 +85,10 @@ game_state.main.prototype = {
 		//Crates
 		//Differentzones where a crate can appear
 		this.crateApparitionZones = [
-			{xMin:20, xMax:w-20, yMin:20, yMax:100},
-			{xMin:20, xMax:w-20, yMin:120, yMax:160}
+			{ xMin:20, xMax:w-40, yMin:20,  yMax:100},
+			{ xMin:20, xMax:w-40, yMin:120, yMax:160}
 			//TODO Divide in equal zones
-            //TODO fixed altitude
+			//TODO fixed altitude
 		]
 
 		//first crate
@@ -104,8 +111,8 @@ game_state.main.prototype = {
 		//game.physics.collide(this.player, this.walls);
 		game.physics.overlap(this.enemies, this.player, this.enemyPlayer, null, this);
 		//game.physics.overlap(this.enemies, this.walls, this.enemyWall, null, this);
-		//game.physics.overlap(this.enemies, this.basement, this.enemyBasement, null, this);
-		//game.physics.overlap(this.player, this.basement, this.playerBasement, null, this);
+		game.physics.overlap(this.enemies, this.basement, this.enemyBasement, null, this);
+		game.physics.overlap(this.player, this.basement, this.playerBasement, null, this);
 		//game.physics.overlap(this.bullets, this.walls, this.bulletPlatform, null, this);
 		game.physics.overlap(this.enemies, this.bullets, this.enemyBullet, null, this);
 
@@ -177,14 +184,16 @@ game_state.main.prototype = {
 	updateEnemy: function(enemy){
 		if (enemy.body.velocity.x == 0 /*&& enemy.body.onFloor()*/) {
 			enemy.scale.x *= -1;
-			enemy.body.velocity.x = enemy.velocity  * enemy.scale.x;
+			enemy.body.velocity.x = enemy.velocity  * enemy.scale.x * enemy.velocityMultiplicator;
 			//enemy.animations.play('walk');
 		}
 	},
-	enemyBasement: function(enemy, basement){
+	enemyBasement: function(basement, enemy){
+		console.log('enemyBasement');
+		enemy.velocityMultiplicator = 1.5;
 		enemy.body.velocity.x *= -1.5;
 		enemy.scale.x *= -1;
-		enemy.body.y = 0;
+		enemy.body.y = 20;
 	},
 	enemyPlayer: function(enemy, player){
 		enemy.damage(1);
