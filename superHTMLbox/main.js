@@ -23,6 +23,7 @@ game_state.main.prototype = {
 		game.load.image('no-block', './assets/no-block.png');
 		game.load.image('bullet', './assets/bullet.png');
 		game.load.image('smallEnemy', './assets/enemy.png');
+		game.load.image('bigEnemy', './assets/bigEnemy.png');
 	},
 
 	create: function() { 
@@ -73,7 +74,10 @@ game_state.main.prototype = {
 		this.enemies = game.add.group();
 		this.smallEnemies = game.add.group();
 		this.smallEnemies.createMultiple(20, 'smallEnemy');
+		this.bigEnemies = game.add.group();
+		this.bigEnemies.createMultiple(5, 'bigEnemy');
 		this.enemies.add(this.smallEnemies);
+		this.enemies.add(this.bigEnemies);
 		//this.enemies.setAll('outOfBoundsKill', true);
 
 		//TODO Add kill event listeners

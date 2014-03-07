@@ -12,7 +12,7 @@ Enemies.enemiesAvailable = [
 			if (enemy) {
 				enemy.velocity = 150;
 				enemy.velocityMultiplicator = 1;
-				if (random < 0.5 ) {
+				if (Math.random() < 0.5 ) {
 					enemy.reset(w-100 + i*40, -50);
 					enemy.body.velocity.x = -enemy.velocity ;
 					enemy.scale.setTo(-1, 1);
@@ -28,6 +28,30 @@ Enemies.enemiesAvailable = [
 				enemy.health = 1;
 				//enemy.animations.add('walk', [0, 1], 3, true);
 			}
+		}
+	},
+	function(context){
+		console.log("Create a big enemy");
+		var enemy = context.bigEnemies.getFirstExists(false);
+
+		if (enemy) {
+			enemy.velocity = 150;
+			enemy.velocityMultiplicator = 1;
+			if (Math.random() < 0.5 ) {
+				enemy.reset(w-100, -50);
+				enemy.body.velocity.x = -enemy.velocity ;
+				enemy.scale.setTo(-1, 1);
+			}
+			else
+			{
+				enemy.reset(100, -50);
+				enemy.body.velocity.x = enemy.velocity ;
+				enemy.scale.setTo(1, 1);
+			}
+			enemy.anchor.setTo(0.5, 1);
+			enemy.body.gravity.y = 1000 * gravityMultiplier;
+			enemy.health = 5;
+			//enemy.animations.add('walk', [0, 1], 3, true);
 		}
 	}
 ];
