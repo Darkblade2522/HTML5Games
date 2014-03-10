@@ -5,7 +5,7 @@
  </tileset>
  <layer name="Platforms" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJztWNtOAkEMLSior+CCGPVFQOAZ8Br+/7NsM9vQTNqZ4ZapiU1Ohu2y25NObztDABhGmIrf9xk8QFpWyvtL8dZyIWwQW8Q74gPxaeji668Mv3XBu7X7xGmGGBf4oIZMIOzPArGszEWTAQR+Dfj03ysEfnPw6T/e35IcrCHMj3LEo/+oLhG/XP52EF3EFeIa0UP0I13ufkp3Y9gtzd9vsGuVVrc0vfY/Xn8y/LzGH++v1/hj/1Gf8+g/rs/U5x4rc9GE63PTrl3Q8+vughxuE3bnsO8fFINWLlr5dQ5Zg10H5GznMf7+Sv/wOr+w/7zOL+y/XP3T+u+x/faQ+sD+o/p3SP8t/X4o1Vn1odR/tUT2D4/xx/3j//vtOOH4IzwjXhKwZtxThfpvz8AOQu+YwT5P5CpxqflmEtmVZyp8fhBf09q0+hGE+HyCULM05OabjvEc1b5dZHcqbEq95C3PiOh8ZhE9HyMXu4PEsxK8l2yTdb9BSSzW
+   eJztWF1PQjEMLSiir+BVMeqLgOgzfqCG//+zbLPb0DRdNyFkNbHJyVgvu2u69rR3UwCYKszF78sCbsCXF+P9tXjqbSG8It4Q74gPxCaj0/PPgn3rindbz8mmBeK6wgctZAbpfFaI58a2WDKBZF8HMf33CMm+JcT0H59vTQ62ELaPciSi/4iXyL5S/g4QQ8QJ4hQxQpwpXel5Tjd29q3N3y/Ic5XFW5be+h+N3xX2RY0/Pt+o8cf+ozoX0X/Mz1TnbhvbYgnzc9ePQ7Bz7uKINpw7+y5hVz8oBnO56OXYobKGPA/I3i5i/P2V+hG1f2H/Re1f2H8l/rPq7771Vs89bmD/Ef/9pv7Wfj/U6DxuqPVfK5H1I2L8cf34/37bTzj+CPeIBwden3uIUP0dZbCFVDsWsMsTOUocq7+ZqX3lnQrfH+g5jV2vv4IUn3eQOMtCqb8ZZNYRP27VvnOxp9RLu+UdEd3PrNR6jVLsTpy1EnyWvCfrfgDbZixY
   </data>
  </layer>
  <layer name="Basement" width="40" height="30" visible="0">
