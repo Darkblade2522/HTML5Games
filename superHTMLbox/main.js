@@ -161,8 +161,8 @@ game_state.main.prototype = {
 		}
 
 		//Add new enemies
-		if (this.game.time.now > this.enemyTime) {
-			this.enemyTime = game.time.now + 1000 + Math.floor(Math.random()*500);
+		if (this.game.time.now > this.enemyTime && this.player.alive) {
+			this.enemyTime = game.time.now + 1500 + Math.floor(Math.random()*500);
 			this.newEnemy();
 		}
 	} ,
@@ -179,10 +179,29 @@ game_state.main.prototype = {
 	},
 	playerCrate: function(player, crate){
 		this.newCrate();
-		this.currentWeapon = Weapon.getRandomWeapon();
+		var w;
+		do{
+			w = Weapon.getRandomWeapon();
+		} while(w.name == this.currentWeapon.name)
+
+		this.currentWeapon = w;
+		console.log(w.name);
 	},
 	bulletPlatform: function(bullet, platform){
-		bullet.kill();
+		if (bullet.properties.bounceCount == 0){
+			bullet.kill();
+		}
+		else {
+			bullet.properties.bounceCount--;
+			//TODO Check boucing directions
+			/*if (bullet.body.touching.left || bullet.body.touching.right)
+				bullet.body.velocity.x *= -bullet.properties.bounceValue;
+			if (bullet.body.touching.top || bullet.body.touching.bottom)
+				bullet.body.velocity.y *= -bullet.properties.bounceValue;*/
+
+			//CLEAN fallback for disc launcher
+			bullet.body.velocity.x = -bullet.properties.bounceValue * bullet.properties.velocity;
+		}
 		//this.bullets.remove(bullet);
 	},
 	updateEnemy: function(enemy){
@@ -205,8 +224,11 @@ game_state.main.prototype = {
 	},
 	enemyBullet: function(enemy, bullet){
 		console.log('enemyBullet');
-		enemy.damage(bullet.damage);
-		bullet.kill();
+		enemy.damage(bullet.properties.damage);
+		if (bullet.properties.piercing == 0)
+			bullet.kill();
+		else 
+			bullet.properties.piercing--;
 	},
 	playerBasement: function(player, basement){
 		console.log('playerBasement');

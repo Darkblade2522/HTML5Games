@@ -2,6 +2,7 @@
 var Enemies = function(){
 };
 
+//TODO set enemy properties as a "properties" subobject
 Enemies.enemiesAvailable = [
 	function(context){
 		console.log("Create a group of 1-3 small enemies");
