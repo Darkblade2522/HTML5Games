@@ -3,6 +3,7 @@
 
 var w = 640;
 var h = 480;
+var score = 0;
 var game = new Phaser.Game(w, h, Phaser.AUTO, 'game-div');
 var gravityMultiplier = 1;//18/1000;
 
@@ -28,6 +29,9 @@ game_state.main.prototype = {
 
 	create: function() { 
 		// This function will be called after the preload function. Here we set up the game, display sprites, add labels, etc.
+
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		game.physics.arcade.gravity.y = 500;
 		// Display a sprite on the screen
 		// Parameters: x position, y position, name of the sprite
 		this.map = game.add.tilemap('level1');
@@ -38,27 +42,30 @@ game_state.main.prototype = {
 		//TODO Use simple sprites or différent tilemaps for collision
 		//TODO Use a background layer for decoration?
 		//this.basement = this.map.createLayer('Basement');
-		this.roof     = this.map.createLayer('Roof');
+		//this.roof     = this.map.createLayer('Roof');
 		//this.layer.resizeWorld();
 
-		this.basement = game.add.sprite(w/2-50, h, 'no-block');
-		this.basement.height = 20;
-		this.basement.width = 120;
+		this.basement = game.add.sprite(w/2-50, h-20, 'no-block');
+		game.physics.enable(this.basement, Phaser.Physics.ARCADE);
+		this.basement.body.allowGravity = false;
+		//TODO replace by a body?
 		//this.basement.body.immovable = true;
 
 		this.player = game.add.sprite(w/2, h/2, 'player');
-		this.player.scale.setTo(0.5,0.5);
-		this.player.anchor.setTo(0.5,0.5);
+		game.physics.enable(this.player, Phaser.Physics.ARCADE);
+		//this.player.scale.setTo(0.5,0.5);
+		//this.player.anchor.setTo(0.5,0.5);
 
 		this.player.body.bounce.y = 0.2;
-		this.player.body.gravity.y = 1000 * gravityMultiplier;
-		this.player.body.minVelocity.y = 5;
+		//this.player.body.gravity.y = 1000 * gravityMultiplier;
+		//this.player.body.minVelocity.y = 5;
 		this.player.health = 0;
 		this.player.velocity = 180;
 		this.facing = Phaser.LEFT;
 
 		//Give default weapon
 		this.currentWeapon = Weapon.getWeapon(0);
+		document.getElementById("weapon").innerHTML = this.currentWeapon.name;
 
 		this.keyboard = game.input.keyboard.createCursorKeys();
 		this.keyboard.space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -66,19 +73,28 @@ game_state.main.prototype = {
 		//this.buildLevel();
 		
 		this.bullets = game.add.group();
+		this.bullets.enableBody = true;
+    	this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
 		this.bullets.createMultiple(50, 'bullet');
 		this.bullets.setAll('outOfBoundsKill', true);
 
 		this.bulletTime = game.time.now; //Used for weapon cooldown
 
 		this.enemies = game.add.group();
-		this.smallEnemies = game.add.group();
-		this.smallEnemies.createMultiple(20, 'smallEnemy');
-		this.bigEnemies = game.add.group();
-		this.bigEnemies.createMultiple(5, 'bigEnemy');
-		this.enemies.add(this.smallEnemies);
-		this.enemies.add(this.bigEnemies);
-		//this.enemies.setAll('outOfBoundsKill', true);
+		this.enemies.enableBody = true;
+    	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
+    	/*this.smallEnemies = game.add.group();
+    	this.bigEnemies = game.add.group();
+    	this.enemies.add(this.smallEnemies);
+    	this.enemies.add(this.bigEnemies);
+		this.smallEnemies.enableBody = true;
+    	this.smallEnemies.physicsBodyType = Phaser.Physics.ARCADE;
+		this.bigEnemies.enableBody = true;
+    	this.bigEnemies.physicsBodyType = Phaser.Physics.ARCADE;*/
+
+		this.enemies.createMultiple(20, 'smallEnemy');
+		//this.bigEnemies.createMultiple(5, 'bigEnemy');
+		this.enemies.setAll('outOfBoundsKill', true);
 
 		//TODO Add kill event listeners
 		this.player.events.onKilled.add(this.playerDie, this);
@@ -96,29 +112,33 @@ game_state.main.prototype = {
 		]
 
 		//first crate
-		this.crate = game.add.game.add.sprite(-50, -50, 'crate');
-		this.crate.body.gravity.y = 1000 * gravityMultiplier;
+		this.crate = game.add.sprite(-50, -50, 'crate');
+		game.physics.enable(this.crate, Phaser.Physics.ARCADE);
+		//this.crate.body.gravity.y = 1000 * gravityMultiplier;
 		this.newCrate();
+
+		//score
+		this.score = document.getElementById("score").innerHTML = this.score = 0;
 	},
 
 	update: function() {
 		// This is where we will spend the most of our time. This function is called 60 times per second to update the game.
 
-		game.physics.collide(this.player, this.platforms);
-		game.physics.collide(this.crate, this.platforms);
-		game.physics.collide(this.enemies, this.platforms);
-		//game.physics.collide(this.enemies, this.platforms);
-		game.physics.overlap(this.bullets, this.platforms, this.bulletPlatform, null, this);
-		game.physics.overlap(this.player, this.crate, this.playerCrate, null, this);
-		//game.physics.collide(this.player, this.roof);
-		//game.physics.collide(this.player, this.basement);
-		//game.physics.collide(this.player, this.walls);
-		game.physics.overlap(this.enemies, this.player, this.enemyPlayer, null, this);
+		game.physics.arcade.collide(this.player, this.platforms);
+		game.physics.arcade.collide(this.crate, this.platforms);
+		game.physics.arcade.collide(this.enemies, this.platforms);
+		game.physics.arcade.overlap(this.bullets, this.platforms, this.bulletPlatform, null, this);
+		game.physics.arcade.overlap(this.player, this.crate, this.playerCrate, null, this);
+		//game.physics.arcade.collide(this.player, this.roof);
+		//game.physics.arcade.collide(this.player, this.basement);
+		//game.physics.arcade.collide(this.player, this.walls);
+		game.physics.arcade.overlap(this.enemies, this.player, this.enemyPlayer, null, this);
 		//game.physics.overlap(this.enemies, this.walls, this.enemyWall, null, this);
-		game.physics.overlap(this.enemies, this.basement, this.enemyBasement, null, this);
-		game.physics.overlap(this.player, this.basement, this.playerBasement, null, this);
-		//game.physics.overlap(this.bullets, this.walls, this.bulletPlatform, null, this);
-		game.physics.overlap(this.enemies, this.bullets, this.enemyBullet, null, this);
+		game.physics.arcade.overlap(this.enemies, this.basement, this.enemyBasement, null, this);
+		game.physics.arcade.overlap(this.player, this.basement, this.playerBasement, null, this);
+		//game.physics.arcade.overlap(this.bullets, this.walls, this.bulletPlatform, null, this);
+		game.physics.arcade.overlap(this.enemies, this.bullets, this.enemyBullet, null, this);
+		game.physics.arcade.overlap(this.player, this.bullets, this.playerBullet, null, this);
 
 
 		this.enemies.forEachAlive(this.updateEnemy, this);
@@ -149,15 +169,15 @@ game_state.main.prototype = {
 			//this.player.frame = 4;
 		}
 
-		//Shoot
-		if (this.keyboard.space.isDown && this.player.alive){
-			this.currentWeapon.shoot(this);
-		}
-
 		//  Allow the this.player to jump if they are touching the ground.
 		if (this.keyboard.up.isDown && this.player.body.onFloor())
 		{
 			this.player.body.velocity.y = -450;
+		}
+
+		//Shoot
+		if (this.keyboard.space.isDown && this.player.alive){
+			this.currentWeapon.shoot(this);
 		}
 
 		//Add new enemies
@@ -177,6 +197,12 @@ game_state.main.prototype = {
 		};
 		this.crate.reset(crate.x, crate.y);
 	},
+	playerBullet: function(player, bullet){
+		if(bullet.properties.weaponName == "disc launcher" && bullet.properties.bounceCount == 0){
+			player.damage(1);
+			bullet.kill();
+		}
+	},
 	playerCrate: function(player, crate){
 		this.newCrate();
 		var w;
@@ -185,6 +211,8 @@ game_state.main.prototype = {
 		} while(w.name == this.currentWeapon.name)
 
 		this.currentWeapon = w;
+		document.getElementById("weapon").innerHTML = w.name;
+		document.getElementById("score").innerHTML = ++this.score;
 		console.log(w.name);
 	},
 	bulletPlatform: function(bullet, platform){
@@ -193,16 +221,7 @@ game_state.main.prototype = {
 		}
 		else {
 			bullet.properties.bounceCount--;
-			//TODO Check boucing directions
-			/*if (bullet.body.touching.left || bullet.body.touching.right)
-				bullet.body.velocity.x *= -bullet.properties.bounceValue;
-			if (bullet.body.touching.top || bullet.body.touching.bottom)
-				bullet.body.velocity.y *= -bullet.properties.bounceValue;*/
-
-			//CLEAN fallback for disc launcher
-			bullet.body.velocity.x = -bullet.properties.bounceValue * bullet.properties.velocity;
 		}
-		//this.bullets.remove(bullet);
 	},
 	updateEnemy: function(enemy){
 		if (enemy.body.velocity.x == 0 /*&& enemy.body.onFloor()*/) {
@@ -224,11 +243,16 @@ game_state.main.prototype = {
 	},
 	enemyBullet: function(enemy, bullet){
 		console.log('enemyBullet');
+		if (bullet.properties.piercing != 0){
+			if(bullet.properties.enemiesDamaged.indexOf(enemy) == -1){
+				enemy.damage(bullet.properties.damage);
+				bullet.properties.piercing--;
+				bullet.properties.enemiesDamaged.push(enemy); //FIXME Probably if enemy dies and respawn (recycled), wont be hit again
+			}
+			return;
+		}
 		enemy.damage(bullet.properties.damage);
-		if (bullet.properties.piercing == 0)
-			bullet.kill();
-		else 
-			bullet.properties.piercing--;
+		bullet.kill();
 	},
 	playerBasement: function(player, basement){
 		console.log('playerBasement');
@@ -244,6 +268,9 @@ game_state.main.prototype = {
 		//TODO add nice particle effects
 	},
 	bulletDie: function(bullet){
+		if (bullet.properties.explosionRadius != 0)	{
+			//Boom baby!
+		}
 		console.log('bulletDie');
 		//TODO add nice particle effects
 	}
