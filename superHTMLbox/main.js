@@ -52,9 +52,9 @@ game_state.main.prototype = {
 		//this.basement.body.immovable = true;
 
 		this.player = game.add.sprite(w/2, h/2, 'player');
+		this.player.scale.setTo(0.5,0.5);
+		this.player.anchor.setTo(0.5,0.5);
 		game.physics.enable(this.player, Phaser.Physics.ARCADE);
-		//this.player.scale.setTo(0.5,0.5);
-		//this.player.anchor.setTo(0.5,0.5);
 
 		this.player.body.bounce.y = 0.2;
 		//this.player.body.gravity.y = 1000 * gravityMultiplier;

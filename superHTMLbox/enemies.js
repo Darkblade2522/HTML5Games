@@ -77,7 +77,7 @@ Enemies.enemiesAvailable = [
 				}
 				//enemy.anchor.setTo(01, 0.5);
 				enemy.body.gravity.y = 1000 * gravityMultiplier;
-				enemy.health = 1;
+				enemy.health = 2;
 				//enemy.animations.add('walk', [0, 1], 3, true);
 			}
 		}
