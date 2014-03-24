@@ -105,8 +105,8 @@ game_state.main.prototype = {
 		//Crates
 		//Differentzones where a crate can appear
 		this.crateApparitionZones = [
-			{ xMin:20, xMax:w-40, yMin:20,  yMax:100},
-			{ xMin:20, xMax:w-40, yMin:120, yMax:160}
+			{ xMin:32, xMax:w-48, y:96},
+			{ xMin:32, xMax:w-48, y:262}
 			//TODO Divide in equal zones
 			//TODO fixed altitude
 		]
@@ -178,6 +178,12 @@ game_state.main.prototype = {
 		//Shoot
 		if (this.keyboard.space.isDown && this.player.alive){
 			this.currentWeapon.shoot(this);
+			game.physics.arcade.collide(this.player, this.platforms);
+		}
+		//Restart game
+		else if(!this.player.alive && this.keyboard.space.isDown && this.keyboard.space.duration < 50)
+		{
+			this.game.state.start('main');
 		}
 
 		//Add new enemies
@@ -193,7 +199,7 @@ game_state.main.prototype = {
 		var zone = this.crateApparitionZones[Math.floor(Math.random() * this.crateApparitionZones.length)];;
 		var crate = {
 			x: (Math.floor(Math.random() * (zone.xMax - zone.xMin)) + zone.xMin),
-			y: (Math.floor(Math.random() * (zone.yMax - zone.yMin)) + zone.yMin)
+			y: zone.y)
 		};
 		this.crate.reset(crate.x, crate.y);
 	},

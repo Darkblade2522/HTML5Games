@@ -35,7 +35,7 @@ Weapon.weaponsAvailable = [
 			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				if (context.facing == Phaser.LEFT)
 					bullet.body.velocity.x = -this.bulletVelocity;
 				else
@@ -50,7 +50,7 @@ Weapon.weaponsAvailable = [
 			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				if (context.facing == Phaser.LEFT) {
 					bullet.body.velocity.x = -this.bulletVelocity;
 					context.player.body.x += 4; //Recoil
@@ -70,7 +70,7 @@ Weapon.weaponsAvailable = [
 			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				if (context.facing == Phaser.LEFT) {
 					bullet.body.velocity.x = -this.bulletVelocity;
 					context.player.body.x += 4; //Recoil
@@ -90,7 +90,7 @@ Weapon.weaponsAvailable = [
 			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				if (context.facing == Phaser.LEFT)
 					bullet.body.velocity.x = -this.bulletVelocity;
 				else
@@ -106,7 +106,7 @@ Weapon.weaponsAvailable = [
 
 				var bullet = context.bullets.getFirstExists(false);
 				if (bullet) {
-					bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+					bullet.reset(context.player.body.center.x, context.player.body.center.y);
 					if (context.facing == Phaser.LEFT)
 						bullet.body.velocity.x = -this.bulletVelocity;
 					else
@@ -128,25 +128,25 @@ Weapon.weaponsAvailable = [
 
 			var bullet = context.bullets.getFirstExists(false);
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				bullet.body.velocity.x = -this.bulletVelocity;
 				this.addBulletProperties(bullet);
 			}
 			var bullet2 = context.bullets.getFirstExists(false);
 			if (bullet2) {
-				bullet2.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet2.reset(context.player.body.center.x, context.player.body.center.y);
 				bullet2.body.velocity.x = this.bulletVelocity;
 				this.addBulletProperties(bullet2);
 			}
 		}
 	}, "double pistol", 300, 1),
-	new Weapon(function(context){
+	/*new Weapon(function(context){
 		if (context.game.time.now > context.bulletTime) {
 			context.bulletTime = game.time.now + this.cooldown;
 			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				if (context.facing == Phaser.LEFT)
 					bullet.body.velocity.x = -this.bulletVelocity;
 				else
@@ -155,7 +155,7 @@ Weapon.weaponsAvailable = [
 			}
 		}
 	}, "rocket launcher", 600, 10, 600, 0, 0, 250),
-	/*new Weapon(function(context){
+	new Weapon(function(context){
 		if (context.game.time.now > context.bulletTime) {
 			context.bulletTime = game.time.now + this.cooldown;
 			var bullet = context.bullets.getFirstExists(false);
@@ -180,7 +180,7 @@ Weapon.weaponsAvailable = [
 			var bullet = context.bullets.getFirstExists(false);
 
 			if (bullet) {
-				bullet.reset(context.player.body.center.x, context.player.body.center.y/*, 1*/);
+				bullet.reset(context.player.body.center.x, context.player.body.center.y);
 				if (context.facing == Phaser.LEFT)
 					bullet.body.velocity.x = -this.bulletVelocity;
 				else
@@ -192,7 +192,9 @@ Weapon.weaponsAvailable = [
 ]
 
 Weapon.getRandomWeapon = function(){
-	return this.weaponsAvailable[Math.floor(Math.random() * this.weaponsAvailable.length)];
+	//return this.weaponsAvailable[Math.floor(Math.random() * this.weaponsAvailable.length)];
+	//No pistol
+	return this.weaponsAvailable[Math.floor(Math.random() * this.weaponsAvailable.length-1)+1];
 }
 
 Weapon.getWeapon = function(weaponIndex){
