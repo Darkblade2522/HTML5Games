@@ -1,9 +1,11 @@
 Phaser2 migration
 =================
 
-- Set correct anchors and scales => OK for player || need ennemies
+- !Set correct anchors and scales => OK for player || need ennemies
+- Create sprite and animations for player
+- Set body to the right shape/size, and bullets origin
 - Set body for basement collision (instead of sprites)
-- Nested groups and physics
+- !Nested groups and physics
 - Adjust Gravity
 
 
@@ -18,7 +20,7 @@ General
 
 - Crate appartion zones
 - Particles
-- Polish
+- !Polish
 	- restart without reload => OK
 	- screens and menus, etc.
 - Graphisms (Duh!)

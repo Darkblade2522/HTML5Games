@@ -19,7 +19,7 @@ game_state.main.prototype = {
 		game.stage.backgroundColor = '#71c5cf';
 		game.load.tilemap('level1', './assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('tiles-1', './assets/tiles-1.png');
-		game.load.image('player', './assets/player.png');
+		game.load.image('player', './assets/player2.png');
 		game.load.image('crate', './assets/brick.png');
 		game.load.image('no-block', './assets/no-block.png');
 		game.load.image('bullet', './assets/bullet.png');
@@ -31,7 +31,7 @@ game_state.main.prototype = {
 		// This function will be called after the preload function. Here we set up the game, display sprites, add labels, etc.
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		game.physics.arcade.gravity.y = 500;
+		game.physics.arcade.gravity.y = 1000;
 		// Display a sprite on the screen
 		// Parameters: x position, y position, name of the sprite
 		this.map = game.add.tilemap('level1');
@@ -80,9 +80,13 @@ game_state.main.prototype = {
 
 		this.bulletTime = game.time.now; //Used for weapon cooldown
 
+		this.explosions = game.add.group();
+		this.explosions.enableBody = true;
+    	this.explosions.physicsBodyType = Phaser.Physics.ARCADE;
+
 		this.enemies = game.add.group();
-		this.enemies.enableBody = true;
-    	this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
+		//this.enemies.enableBody = true;
+    	//this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
     	/*this.smallEnemies = game.add.group();
     	this.bigEnemies = game.add.group();
     	this.enemies.add(this.smallEnemies);
@@ -95,6 +99,9 @@ game_state.main.prototype = {
 		this.enemies.createMultiple(20, 'smallEnemy');
 		//this.bigEnemies.createMultiple(5, 'bigEnemy');
 		this.enemies.setAll('outOfBoundsKill', true);
+		this.enemies.setAll('anchor.x', 0.5);
+		this.enemies.setAll('anchor.y', 0.5);
+		game.physics.enable(this.enemies, Phaser.Physics.ARCADE);
 
 		//TODO Add kill event listeners
 		this.player.events.onKilled.add(this.playerDie, this);
@@ -139,6 +146,7 @@ game_state.main.prototype = {
 		//game.physics.arcade.overlap(this.bullets, this.walls, this.bulletPlatform, null, this);
 		game.physics.arcade.overlap(this.enemies, this.bullets, this.enemyBullet, null, this);
 		game.physics.arcade.overlap(this.player, this.bullets, this.playerBullet, null, this);
+		//game.physics.arcade.overlap(this.enemies, this.explosions, this.enemyExplosion, null, this);
 
 
 		this.enemies.forEachAlive(this.updateEnemy, this);
@@ -149,6 +157,7 @@ game_state.main.prototype = {
 		{
 			//  Move to the left
 			this.player.body.velocity.x = -this.player.velocity;
+			this.player.scale.x = -0.5;
 			this.facing = Phaser.LEFT;
 
 			//this.player.animations.play('left');
@@ -157,6 +166,7 @@ game_state.main.prototype = {
 		{
 			//  Move to the right
 			this.player.body.velocity.x = this.player.velocity;
+			this.player.scale.x = 0.5;
 			this.facing = Phaser.RIGHT;
 
 			//this.player.animations.play('right');
@@ -199,7 +209,7 @@ game_state.main.prototype = {
 		var zone = this.crateApparitionZones[Math.floor(Math.random() * this.crateApparitionZones.length)];;
 		var crate = {
 			x: (Math.floor(Math.random() * (zone.xMax - zone.xMin)) + zone.xMin),
-			y: zone.y)
+			y: zone.y
 		};
 		this.crate.reset(crate.x, crate.y);
 	},
@@ -260,6 +270,10 @@ game_state.main.prototype = {
 		enemy.damage(bullet.properties.damage);
 		bullet.kill();
 	},
+	/*enemyExplosion: function(enemy, explosion){
+		console.log('enemyExplosion');
+		enemy.damage(explosion.properties.damage);
+	},*/
 	playerBasement: function(player, basement){
 		console.log('playerBasement');
 		player.damage(99);
@@ -276,6 +290,7 @@ game_state.main.prototype = {
 	bulletDie: function(bullet){
 		if (bullet.properties.explosionRadius != 0)	{
 			//Boom baby!
+			//TODO Manual collision check for explosion
 		}
 		console.log('bulletDie');
 		//TODO add nice particle effects
